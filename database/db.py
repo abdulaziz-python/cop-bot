@@ -1,113 +1,117 @@
-import aiosqlite
-from config import DB_NAME
+from databases import Database
+from sqlalchemy import MetaData, text
+from sqlalchemy.ext.asyncio import create_async_engine
+from config import DATABASE_URL
+
+ASYNC_DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+asyncpg://')
+
+database = Database(DATABASE_URL)
+metadata = MetaData()
+
+engine = create_async_engine(ASYNC_DATABASE_URL)
 
 async def create_tables():
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            user_id INTEGER PRIMARY KEY,
-            username TEXT,
-            language TEXT DEFAULT 'uz',
-            joined_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-        ''')
-        
-        await db.execute('''
-        CREATE TABLE IF NOT EXISTS listings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            name TEXT,
-            link TEXT,
-            technologies TEXT,
-            price REAL,
-            description TEXT,
-            image_file_id TEXT,
-            status TEXT DEFAULT 'pending',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users (user_id)
-        )
-        ''')
-        
-        await db.commit()
+    from .models import metadata
+    async with engine.begin() as conn:
+        await conn.run_sync(metadata.create_all)
 
-async def add_user(user_id, username, language='uz'):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            "INSERT OR IGNORE INTO users (user_id, username, language) VALUES (?, ?, ?)",
-            (user_id, username, language)
-        )
-        await db.commit()
+async def add_user(user_id: int, username: str, language: str = "uz"):
+    from .models import users
+    try:
+        query = users.insert().values(id=user_id, username=username, language=language)
+        await database.execute(query)
+    except Exception:
+        pass
 
-async def get_user(user_id):
-    async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute(
-            "SELECT * FROM users WHERE user_id = ?",
-            (user_id,)
-        ) as cursor:
-            return await cursor.fetchone()
+async def get_user(user_id: int):
+    from .models import users
+    query = users.select().where(users.c.id == user_id)
+    try:
+        return await database.fetch_one(query)
+    except Exception as e:
+        print(f"Error getting user: {e}")
+        return None
 
-async def update_language(user_id, language):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            "UPDATE users SET language = ? WHERE user_id = ?",
-            (language, user_id)
-        )
-        await db.commit()
+async def update_language(user_id: int, language: str):
+    from .models import users
+    query = users.update().where(users.c.id == user_id).values(language=language)
+    try:
+        await database.execute(query)
+    except Exception as e:
+        print(f"Error updating language: {e}")
 
-async def add_listing(user_id, name, link, technologies, price, description, image_file_id=None):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            """INSERT INTO listings 
-            (user_id, name, link, technologies, price, description, image_file_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (user_id, name, link, technologies, price, description, image_file_id)
-        )
-        await db.commit()
-        
-        async with db.execute("SELECT last_insert_rowid()") as cursor:
-            listing_id = await cursor.fetchone()
-            return listing_id[0]
+async def add_listing(user_id: int, name: str, link: str, technologies: str, price: float, description: str, image_file_id: str = None):
+    from .models import listings
+    query = listings.insert().values(
+        user_id=user_id,
+        name=name,
+        link=link,
+        technologies=technologies,
+        price=price,
+        description=description,
+        image_file_id=image_file_id,
+    )
+    try:
+        return await database.execute(query)
+    except Exception as e:
+        print(f"Error adding listing: {e}")
+        return None
 
-async def get_listing(listing_id):
-    async with aiosqlite.connect(DB_NAME) as db:
-        db.row_factory = aiosqlite.Row
-        async with db.execute(
-            "SELECT * FROM listings WHERE id = ?",
-            (listing_id,)
-        ) as cursor:
-            return await cursor.fetchone()
+async def get_listing(listing_id: int):
+    from .models import listings
+    query = listings.select().where(listings.c.id == listing_id)
+    try:
+        return await database.fetch_one(query)
+    except Exception as e:
+        print(f"Error getting listing: {e}")
+        return None
 
-async def update_listing_status(listing_id, status):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            "UPDATE listings SET status = ? WHERE id = ?",
-            (status, listing_id)
-        )
-        await db.commit()
+async def update_listing_status(listing_id: int, status: str):
+    from .models import listings
+    query = listings.update().where(listings.c.id == listing_id).values(status=status)
+    try:
+        await database.execute(query)
+    except Exception as e:
+        print(f"Error updating listing status: {e}")
 
-async def get_user_listings_count(user_id):
-    async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute(
-            "SELECT COUNT(*) FROM listings WHERE user_id = ?",
-            (user_id,)
-        ) as cursor:
-            result = await cursor.fetchone()
-            return result[0] if result else 0
+async def get_user_listings_count(user_id: int):
+        print(f"Error updating listing status: {e}")
+
+async def get_user_listings_count(user_id: int):
+    from .models import listings
+    query = listings.select().where(listings.c.user_id == user_id)
+    try:
+        result = await database.fetch_all(query)
+        return len(result) if result else 0
+    except Exception as e:
+        print(f"Error getting user listings count: {e}")
+        return 0
 
 async def get_total_users():
-    async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute("SELECT COUNT(*) FROM users") as cursor:
-            result = await cursor.fetchone()
-            return result[0] if result else 0
+    from .models import users
+    query = users.select()
+    try:
+        result = await database.fetch_all(query)
+        return len(result) if result else 0
+    except Exception as e:
+        print(f"Error getting total users: {e}")
+        return 0
 
 async def get_total_listings():
-    async with aiosqlite.connect(DB_NAME) as db:
-        async with db.execute("SELECT COUNT(*) FROM listings") as cursor:
-            result = await cursor.fetchone()
-            return result[0] if result else 0
+    from .models import listings
+    query = listings.select()
+    try:
+        result = await database.fetch_all(query)
+        return len(result) if result else 0
+    except Exception as e:
+        print(f"Error getting total listings: {e}")
+        return 0
 
 async def get_all_users():
-    async with aiosqlite.connect(DB_NAME) as db:
-        db.row_factory = aiosqlite.Row
-        async with db.execute("SELECT user_id FROM users") as cursor:
-            return await cursor.fetchall()
+    from .models import users
+    query = users.select()
+    try:
+        return await database.fetch_all(query)
+    except Exception as e:
+        print(f"Error getting all users: {e}")
+        return []

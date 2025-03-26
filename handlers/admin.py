@@ -1,71 +1,90 @@
-﻿# -*- coding: utf-8 -*-
-from aiogram import Router, F
+﻿from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from database.db import get_listing, update_listing_status, get_total_users, get_total_listings, get_all_users
+from database.db import get_user, get_all_users, update_listing_status, get_listing, get_total_users, get_total_listings
 from keyboards.reply import main_menu_keyboard
+from keyboards.inline import moderation_keyboard
 from utils.localization import get_string
-from config import config, ADMIN_IDS 
-from constants import Button, ButtonText, Channel, Config
-from utils.filters import text_contains_button
+from utils.helpers import format_and_escape_markdown, format_html
+from config import config
+from constants import Channel
 
 router = Router()
 
-class Broadcast(StatesGroup):
-    waiting_for_message = State()
+class AdminStates(StatesGroup):
+    waiting_for_broadcast = State()
 
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
     if message.from_user.id not in config.ADMIN_IDS:
         return
     
-    total_users = await get_total_users()
-    total_listings = await get_total_listings()
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else "uz"
+    
+    admin_text = format_html(
+        get_string('admin_panel', language),
+        total_users=await get_total_users(),
+        total_listings=await get_total_listings()
+    )
     
     await message.answer(
-        text=get_string('admin_panel', Config.DEFAULT_LANGUAGE).format(
-            total_users=total_users,
-            total_listings=total_listings
-        ),
-        parse_mode="Markdown"
+        text=admin_text,
+        parse_mode="HTML"
     )
 
 @router.message(Command("broadcast"))
 async def broadcast_command(message: Message, state: FSMContext):
-    if message.from_user.id not in ADMIN_IDS:
+    if message.from_user.id not in config.ADMIN_IDS:
         return
     
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else "uz"
+    
     await message.answer(
-        text=get_string('broadcast', 'uz'),
-        parse_mode="Markdown"
+        text=format_html(get_string('broadcast_prompt', language)),
+        parse_mode="HTML"
     )
     
-    await state.set_state(Broadcast.waiting_for_message)
+    await state.set_state(AdminStates.waiting_for_broadcast)
 
-@router.message(Broadcast.waiting_for_message)
+@router.message(AdminStates.waiting_for_broadcast)
 async def process_broadcast(message: Message, state: FSMContext):
-    if message.from_user.id not in ADMIN_IDS:
+    if message.from_user.id not in config.ADMIN_IDS:
         return
     
-    users = await get_all_users()
-    count = 0
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else "uz"
     
-    for user in users:
-        try:
-            await message.bot.send_message(
-                chat_id=user['user_id'],
-                text=message.text,
-                parse_mode="Markdown"
-            )
-            count += 1
-        except Exception as e:
-            print(f"Error sending broadcast to {user['user_id']}: {e}")
+    users = await get_all_users()
+    
+    sent_count = 0
+    failed_count = 0
     
     await message.answer(
-        text=get_string('broadcast_sent', 'uz').format(count=count),
-        parse_mode="Markdown"
+        text=format_html(get_string('broadcast_started', language)),
+        parse_mode="HTML"
+    )
+    
+    for user_data in users:
+        try:
+            await message.forward(chat_id=user_data['id'])
+            sent_count += 1
+        except Exception as e:
+            failed_count += 1
+            print(f"Failed to send message to user {user_data['id']}: {e}")
+    
+    result_text = format_html(
+        get_string('broadcast_completed', language),
+        sent=sent_count,
+        failed=failed_count
+    )
+    
+    await message.answer(
+        text=result_text,
+        parse_mode="HTML"
     )
     
     await state.clear()
@@ -73,91 +92,120 @@ async def process_broadcast(message: Message, state: FSMContext):
 @router.callback_query(F.data.startswith("approve_"))
 async def approve_listing(callback: CallbackQuery):
     if callback.from_user.id not in config.ADMIN_IDS:
+        await callback.answer("Not authorized")
         return
-        
-    listing_id = int(callback.data.split("_")[1])
-    listing = await get_listing(listing_id)
     
-    if not listing:
-        await callback.answer("Listing not found!")
-        return
+    listing_id = int(callback.data.split("_")[1])
     
     await update_listing_status(listing_id, "approved")
     
-    try:
-        chat = await callback.bot.get_chat(listing['user_id'])
-        username = chat.username or f"User#{listing['user_id']}"
-        
-        announcement = get_string('announcement', Config.DEFAULT_LANGUAGE).format(
-            **listing,
-            owner=f"@{username}"
-        )
-        
-        # First, check if there's an image
-        if listing['image_file_id']:
-            # Send the image with the announcement as caption
-            await callback.bot.send_photo(
-                chat_id=Channel.ANNOUNCEMENT,
-                photo=listing['image_file_id'],
-                caption=announcement,
-                parse_mode="Markdown"
+    user = await get_user(callback.from_user.id)
+    language = user[2] if user else "uz"
+    
+    listing = await get_listing(listing_id)
+    if listing:
+        # Post to channel
+        try:
+            channel_name = Channel.COOPLINK.replace("@", "")
+            
+            # Get listing owner username
+            owner_data = await get_user(listing['user_id'])
+            owner_username = f"@{owner_data['username']}" if owner_data and owner_data['username'] != "Unknown" else f"User ID: {listing['user_id']}"
+            
+            # Format announcement for channel
+            announcement_text = format_html(
+                get_string('announcement', language),
+                name=listing['name'],
+                link=listing['link'],
+                technologies=listing['technologies'],
+                price=listing['price'],
+                description=listing['description'],
+                owner=owner_username
             )
-        else:
-            # If no image, just send the text
+            
+            # Send to channel
+            if listing['image_file_id']:
+                await callback.bot.send_photo(
+                    chat_id=f"@{channel_name}",
+                    photo=listing['image_file_id'],
+                    caption=announcement_text,
+                    parse_mode="HTML"
+                )
+            else:
+                await callback.bot.send_message(
+                    chat_id=f"@{channel_name}",
+                    text=announcement_text,
+                    parse_mode="HTML"
+                )
+                
+            # Notify admin
+            await callback.message.edit_text(
+                text=format_html(
+                    get_string('listing_approved', language),
+                    listing_id=listing_id
+                ),
+                parse_mode="HTML"
+            )
+            
+            # Notify user
+            user_id = listing['user_id']
+            user_data = await get_user(user_id)
+            user_language = user_data['language'] if user_data else "uz"
+            
             await callback.bot.send_message(
-                chat_id=Channel.ANNOUNCEMENT,
-                text=announcement,
-                parse_mode="Markdown"
+                chat_id=user_id,
+                text=format_html(
+                    get_string('your_listing_approved', user_language),
+                    listing_name=listing['name']
+                ),
+                parse_mode="HTML"
             )
-        
-        # Notify the user that their listing was approved
-        await callback.bot.send_message(
-            chat_id=listing['user_id'],
-            text=get_string('listing_approved', Config.DEFAULT_LANGUAGE),
-            parse_mode="Markdown"
-        )
-        
-        await callback.answer("Listing approved and published!")
-        
-        # Update the admin message
-        await callback.message.edit_text(
-            text=callback.message.text + "\n\n✅ Approved",
-            parse_mode="Markdown"
-        )
-    except Exception as e:
-        print(f"Error approving listing: {e}")
-        await callback.answer("Error approving listing!")
+            
+        except Exception as e:
+            print(f"Error posting to channel: {e}")
+            await callback.message.edit_text(
+                text=format_html(
+                    f"Error posting to channel: {e}",
+                ),
+                parse_mode="HTML"
+            )
+    
+    await callback.answer()
 
 @router.callback_query(F.data.startswith("reject_"))
 async def reject_listing(callback: CallbackQuery):
-    if callback.from_user.id not in ADMIN_IDS:
+    if callback.from_user.id not in config.ADMIN_IDS:
+        await callback.answer("Not authorized")
         return
     
     listing_id = int(callback.data.split("_")[1])
     
-    listing = await get_listing(listing_id)
-    
-    if not listing:
-        await callback.answer("Listing not found!")
-        return
-    
     await update_listing_status(listing_id, "rejected")
     
-    user_id = listing['user_id']
+    user = await get_user(callback.from_user.id)
+    language = user[2] if user else "uz"
     
-    try:
+    await callback.message.edit_text(
+        text=format_html(
+            get_string('listing_rejected', language),
+            listing_id=listing_id
+        ),
+        parse_mode="HTML"
+    )
+    
+    listing = await get_listing(listing_id)
+    if listing:
+        user_id = listing['user_id']
+        user_data = await get_user(user_id)
+        user_language = user_data['language'] if user_data else "uz"
+        
         await callback.bot.send_message(
             chat_id=user_id,
-            text=get_string('listing_rejected', 'uz'),
-            parse_mode="Markdown"
+            text=format_html(
+                get_string('your_listing_rejected', user_language),
+                listing_name=listing['name']
+            ),
+            parse_mode="HTML"
         )
-        
-        await callback.answer("Listing rejected!")
-        
-        await callback.message.edit_text(
-            text=callback.message.text + "\n\n❌ Rejected",
-            parse_mode="Markdown"
-        )
-    except Exception as e:
-        print(f"Error rejecting listing: {e}")
-        await callback.answer("Error rejecting listing!")
+    
+    await callback.answer()

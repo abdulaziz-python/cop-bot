@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import Message
-from database.db import get_user
-from constants import Language, Config
+from typing import Callable, Dict, Any, Awaitable
+from database.db import get_user, add_user
+from constants import Config
 
 class LanguageMiddleware(BaseMiddleware):
     async def __call__(
@@ -12,7 +11,16 @@ class LanguageMiddleware(BaseMiddleware):
         event: Message,
         data: Dict[str, Any]
     ) -> Any:
+        if not event.from_user:
+            return await handler(event, data)
+        
         user = await get_user(event.from_user.id)
-        language = user[2] if user else Config.DEFAULT_LANGUAGE
-        data['user_data'] = {'language': language}
+        
+        if not user:
+            await add_user(
+                user_id=event.from_user.id,
+                username=event.from_user.username or "Unknown",
+                language=Config.DEFAULT_LANGUAGE
+            )
+        
         return await handler(event, data)
