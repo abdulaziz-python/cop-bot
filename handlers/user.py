@@ -1,20 +1,14 @@
-﻿# -*- coding: utf-8 -*-
-from aiogram import Router, F
-from aiogram.types import Message
-from aiogram.filters import CommandStart
+﻿from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
-from database.db import add_user, update_language, get_user_listings_count
-from keyboards.reply import language_keyboard, main_menu_keyboard
+from database.db import add_user, get_user, update_language, get_user_listings_count
+from keyboards.reply import main_menu_keyboard, language_keyboard
 from utils.localization import get_string
-from constants import Button, ButtonText, Language, Config
-from utils.filters import text_contains_button
+from utils.helpers import format_html
+from constants import Button, Language, Config, LanguageSelection
 
 router = Router()
-
-class LanguageSelection(StatesGroup):
-    waiting_for_language = State()
-
 
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
@@ -23,71 +17,99 @@ async def cmd_start(message: Message, state: FSMContext):
         username=message.from_user.username or "Unknown"
     )
     
+    welcome_text = format_html(get_string('welcome', Config.DEFAULT_LANGUAGE))
+    
     await message.answer(
-        text="🇺🇿 *Xush kelibsiz!* / 🇷🇺 *Добро пожаловать!*\n\nTilni tanlang / Выберите язык:",
+        text=welcome_text,
         reply_markup=language_keyboard(),
-        parse_mode="Markdown"
+        parse_mode="HTML"
     )
     await state.set_state(LanguageSelection.waiting_for_language)
 
-@router.message(LanguageSelection.waiting_for_language, F.text.contains("Русский"))
-async def language_selected_ru(message: Message, state: FSMContext, **kwargs):
-    await update_language(message.from_user.id, 'ru')
+@router.message(Command("cancel"))
+async def cmd_cancel(message: Message, state: FSMContext):
+    current_state = await state.get_state()
+    
+    if current_state is None:
+        user = await get_user(message.from_user.id)
+        language = user[2] if user else Config.DEFAULT_LANGUAGE
+        
+        await message.answer(
+            text=format_html(get_string('nothing_to_cancel', language)),
+            reply_markup=main_menu_keyboard(language),
+            parse_mode="HTML"
+        )
+        return
+    
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else Config.DEFAULT_LANGUAGE
+    
+    await state.clear()
     
     await message.answer(
-        text=get_string('language_selected', 'ru'),
-        parse_mode="Markdown"
+        text=format_html(get_string('action_cancelled', language)),
+        reply_markup=main_menu_keyboard(language),
+        parse_mode="HTML"
     )
+
+@router.message(LanguageSelection.waiting_for_language)
+async def language_selected(message: Message, state: FSMContext):
+    if message.text == Button.get_text(Button.UZBEK, Language.UZBEK):
+        language = Language.UZBEK
+    elif message.text == Button.get_text(Button.RUSSIAN, Language.RUSSIAN):
+        language = Language.RUSSIAN
+    else:
+        language = Config.DEFAULT_LANGUAGE
+    
+    await update_language(message.from_user.id, language)
     
     await message.answer(
-        text=get_string('main_menu', 'ru'),
-        reply_markup=main_menu_keyboard('ru'),
-        parse_mode="Markdown"
+        text=format_html(get_string('language_selected', language)),
+        reply_markup=main_menu_keyboard(language),
+        parse_mode="HTML"
     )
     
     await state.clear()
 
-@router.message(LanguageSelection.waiting_for_language, F.text.contains("O'zbek"))
-async def language_selected_uz(message: Message, state: FSMContext, **kwargs):
-    await update_language(message.from_user.id, 'uz')
-    
+@router.message(F.text == Button.get_text(Button.CHANGE_LANGUAGE, Language.UZBEK))
+@router.message(F.text == Button.get_text(Button.CHANGE_LANGUAGE, Language.RUSSIAN))
+async def change_language(message: Message, state: FSMContext):
     await message.answer(
-        text=get_string('language_selected', 'uz'),
-        parse_mode="Markdown"
+        text=format_html(get_string('welcome', Config.DEFAULT_LANGUAGE)),
+        reply_markup=language_keyboard(),
+        parse_mode="HTML"
     )
-    
-    await message.answer(
-        text=get_string('main_menu', 'uz'),
-        reply_markup=main_menu_keyboard('uz'),
-        parse_mode="Markdown"
-    )
-    
-    await state.clear()
+    await state.set_state(LanguageSelection.waiting_for_language)
 
-@router.message(text_contains_button(Button.PROFILE))
-async def show_profile(message: Message, **kwargs):
-    user_data = kwargs.get('user_data', {})
-    language = user_data.get('language', Config.DEFAULT_LANGUAGE)
+@router.message(F.text == Button.get_text(Button.PROFILE, Language.UZBEK))
+@router.message(F.text == Button.get_text(Button.PROFILE, Language.RUSSIAN))
+async def show_profile(message: Message):
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else Config.DEFAULT_LANGUAGE
     
     listings_count = await get_user_listings_count(message.from_user.id)
-    username = Button.escape_markdown(message.from_user.username or "Unknown")
+    
+    profile_text = format_html(
+        get_string('profile', language),
+        user_id=message.from_user.id,
+        username=message.from_user.username or "Unknown",
+        listings_count=listings_count
+    )
     
     await message.answer(
-        text=get_string('profile', language).format(
-            user_id=message.from_user.id,
-            username=username,
-            listings_count=listings_count
-        ),
-        parse_mode="MarkdownV2"
+        text=profile_text,
+        parse_mode="HTML"
     )
 
-
-@router.message(text_contains_button(Button.HELP))
-async def show_help(message: Message, **kwargs):
-    user_data = kwargs.get('user_data', {})
-    language = user_data.get('language', Config.DEFAULT_LANGUAGE)
+@router.message(F.text == Button.get_text(Button.HELP, Language.UZBEK))
+@router.message(F.text == Button.get_text(Button.HELP, Language.RUSSIAN))
+async def show_help(message: Message):
+    user = await get_user(message.from_user.id)
+    language = user[2] if user else Config.DEFAULT_LANGUAGE
+    
+    help_text = format_html(get_string('help', language))
     
     await message.answer(
-        text=get_string('help', language),
-        parse_mode="Markdown"
+        text=help_text,
+        parse_mode="HTML"
     )

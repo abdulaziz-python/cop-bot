@@ -5,8 +5,8 @@ def language_keyboard() -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
             [
-                KeyboardButton(text="O'zbek"),
-                KeyboardButton(text="Русский")
+                KeyboardButton(text=Button.get_text(Button.UZBEK, Language.UZBEK)),
+                KeyboardButton(text=Button.get_text(Button.RUSSIAN, Language.RUSSIAN))
             ]
         ],
         resize_keyboard=True
@@ -20,6 +20,7 @@ def main_menu_keyboard(language: str) -> ReplyKeyboardMarkup:
                 KeyboardButton(text=Button.get_text(Button.SELL_CODE, language))
             ],
             [
+                KeyboardButton(text=Button.get_text(Button.CHANGE_LANGUAGE, language)),
                 KeyboardButton(text=Button.get_text(Button.HELP, language))
             ]
         ],
@@ -40,10 +41,12 @@ def confirm_keyboard(language: str) -> ReplyKeyboardMarkup:
 def skip_keyboard(language: str) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=Button.get_text(Button.SKIP, language))]
+            [
+                KeyboardButton(text=Button.get_text(Button.SKIP, language))
+            ]
         ],
         resize_keyboard=True
-    )
+    )   
 
 def back_keyboard(language: str) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(

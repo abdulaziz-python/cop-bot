@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from utils.localization import get_string
 from constants import Button
 
 def moderation_keyboard(listing_id: int, language: str) -> InlineKeyboardMarkup:

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from typing import Union, Callable
 from aiogram.types import Message, CallbackQuery
 from constants import Button, ButtonText, Config
@@ -21,4 +20,3 @@ def text_contains_button(button: ButtonText) -> Callable:
         )
     
     return check
-

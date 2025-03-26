@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from typing import List
+import os
 
 @dataclass
 class BotConfig:
@@ -22,4 +23,4 @@ ADMIN_IDS = config.ADMIN_IDS
 DB_NAME = config.DB_NAME
 ANNOUNCEMENT_CHANNEL = config.ANNOUNCEMENT_CHANNEL
 REQUIRED_CHANNELS = channels.REQUIRED
-
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://bots_714l_user:aRTuydE5y1kbB1LNBjm30kp9Tq5W3m99@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l")
