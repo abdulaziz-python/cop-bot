@@ -1,0 +1,135 @@
+2025-03-26 09:16:01,128 - root - INFO - Connecting to database...
+2025-03-26 09:16:04,852 - databases - INFO - Connected to database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:16:04,854 - root - INFO - Creating tables...
+2025-03-26 09:16:12,328 - root - INFO - Starting bot...
+2025-03-26 09:16:12,329 - aiogram.dispatcher - INFO - Start polling
+2025-03-26 09:16:12,904 - aiogram.dispatcher - INFO - Run polling for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:18:21,258 - aiogram.event - INFO - Update id=850441991 is handled. Duration 2328 ms by bot id=7510441533
+2025-03-26 09:18:26,585 - aiogram.event - INFO - Update id=850441992 is handled. Duration 2217 ms by bot id=7510441533
+2025-03-26 09:22:11,474 - aiogram.event - INFO - Update id=850441993 is handled. Duration 1563 ms by bot id=7510441533
+2025-03-26 09:22:21,580 - aiogram.event - INFO - Update id=850441994 is handled. Duration 987 ms by bot id=7510441533
+2025-03-26 09:22:28,558 - aiogram.event - INFO - Update id=850441995 is handled. Duration 1086 ms by bot id=7510441533
+2025-03-26 09:23:33,609 - aiogram.event - INFO - Update id=850441996 is handled. Duration 2282 ms by bot id=7510441533
+2025-03-26 09:23:37,771 - aiogram.event - INFO - Update id=850441997 is handled. Duration 997 ms by bot id=7510441533
+2025-03-26 09:23:45,738 - aiogram.event - INFO - Update id=850441998 is handled. Duration 986 ms by bot id=7510441533
+2025-03-26 09:24:06,594 - aiogram.event - INFO - Update id=850441999 is handled. Duration 1028 ms by bot id=7510441533
+2025-03-26 09:24:11,868 - aiogram.event - INFO - Update id=850442000 is handled. Duration 2204 ms by bot id=7510441533
+2025-03-26 09:24:16,983 - aiogram.event - INFO - Update id=850442001 is handled. Duration 2851 ms by bot id=7510441533
+2025-03-26 09:24:50,060 - aiogram.event - INFO - Update id=850442002 is handled. Duration 1613 ms by bot id=7510441533
+2025-03-26 09:24:56,924 - aiogram.event - INFO - Update id=850442003 is handled. Duration 1167 ms by bot id=7510441533
+2025-03-26 09:24:58,860 - aiogram.event - INFO - Update id=850442004 is handled. Duration 1002 ms by bot id=7510441533
+2025-03-26 09:25:01,908 - aiogram.event - INFO - Update id=850442005 is handled. Duration 986 ms by bot id=7510441533
+2025-03-26 09:25:05,590 - aiogram.event - INFO - Update id=850442006 is handled. Duration 1134 ms by bot id=7510441533
+2025-03-26 09:25:09,693 - aiogram.event - INFO - Update id=850442007 is handled. Duration 995 ms by bot id=7510441533
+2025-03-26 09:25:11,443 - aiogram.event - INFO - Update id=850442008 is handled. Duration 1058 ms by bot id=7510441533
+2025-03-26 09:25:15,685 - aiogram.event - INFO - Update id=850442009 is handled. Duration 1044 ms by bot id=7510441533
+2025-03-26 09:25:19,691 - aiogram.event - INFO - Update id=850442010 is handled. Duration 997 ms by bot id=7510441533
+2025-03-26 09:25:21,820 - aiogram.event - INFO - Update id=850442011 is handled. Duration 1054 ms by bot id=7510441533
+2025-03-26 09:25:23,558 - aiogram.event - INFO - Update id=850442012 is handled. Duration 1127 ms by bot id=7510441533
+2025-03-26 09:25:25,172 - aiogram.event - INFO - Update id=850442013 is handled. Duration 1062 ms by bot id=7510441533
+2025-03-26 09:25:28,098 - aiogram.event - INFO - Update id=850442014 is handled. Duration 1108 ms by bot id=7510441533
+2025-03-26 09:25:43,635 - aiogram.event - INFO - Update id=850442015 is handled. Duration 1004 ms by bot id=7510441533
+2025-03-26 09:25:46,240 - aiogram.event - INFO - Update id=850442016 is handled. Duration 985 ms by bot id=7510441533
+2025-03-26 09:25:49,188 - aiogram.event - INFO - Update id=850442017 is handled. Duration 1887 ms by bot id=7510441533
+2025-03-26 09:26:26,068 - aiogram.event - INFO - Update id=850442018 is handled. Duration 1785 ms by bot id=7510441533
+2025-03-26 09:27:15,264 - aiogram.event - INFO - Update id=850442019 is handled. Duration 1359 ms by bot id=7510441533
+2025-03-26 09:27:23,650 - aiogram.event - INFO - Update id=850442020 is handled. Duration 1638 ms by bot id=7510441533
+2025-03-26 09:27:39,126 - aiogram.event - INFO - Update id=850442021 is handled. Duration 2030 ms by bot id=7510441533
+2025-03-26 09:27:42,807 - aiogram.event - INFO - Update id=850442022 is handled. Duration 1058 ms by bot id=7510441533
+2025-03-26 09:27:56,582 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-26 09:27:56,843 - root - INFO - Closing database connection...
+2025-03-26 09:27:57,173 - databases - INFO - Disconnected from database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:27:57,177 - aiogram.dispatcher - INFO - Polling stopped for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:27:57,190 - root - INFO - Bot stopped!
+2025-03-26 09:38:33,244 - root - INFO - Connecting to database...
+2025-03-26 09:38:36,954 - databases - INFO - Connected to database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:38:36,956 - root - INFO - Creating tables...
+2025-03-26 09:38:44,745 - root - INFO - Setting bot commands...
+2025-03-26 09:38:45,244 - root - INFO - Starting bot...
+2025-03-26 09:38:45,245 - aiogram.dispatcher - INFO - Start polling
+2025-03-26 09:38:45,372 - aiogram.dispatcher - INFO - Run polling for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:38:52,872 - aiogram.event - INFO - Update id=850442023 is not handled. Duration 8 ms by bot id=7510441533
+2025-03-26 09:39:04,094 - aiogram.event - INFO - Update id=850442024 is handled. Duration 2209 ms by bot id=7510441533
+2025-03-26 09:39:18,668 - aiogram.event - INFO - Update id=850442025 is handled. Duration 1948 ms by bot id=7510441533
+2025-03-26 09:39:28,877 - aiogram.event - INFO - Update id=850442026 is not handled. Duration 12 ms by bot id=7510441533
+2025-03-26 09:44:15,525 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-26 09:44:15,789 - root - INFO - Closing database connection...
+2025-03-26 09:44:16,091 - databases - INFO - Disconnected from database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:44:16,093 - aiogram.dispatcher - INFO - Polling stopped for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:44:16,100 - root - INFO - Bot stopped!
+2025-03-26 09:44:30,937 - root - INFO - Connecting to database...
+2025-03-26 09:44:34,656 - databases - INFO - Connected to database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:44:34,657 - root - INFO - Creating tables...
+2025-03-26 09:44:42,293 - root - INFO - Setting bot commands...
+2025-03-26 09:44:42,780 - root - INFO - Starting bot...
+2025-03-26 09:44:42,781 - aiogram.dispatcher - INFO - Start polling
+2025-03-26 09:44:42,923 - aiogram.dispatcher - INFO - Run polling for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:45:22,468 - aiogram.event - INFO - Update id=850442027 is handled. Duration 2174 ms by bot id=7510441533
+2025-03-26 09:45:26,182 - aiogram.event - INFO - Update id=850442028 is handled. Duration 1882 ms by bot id=7510441533
+2025-03-26 09:45:31,950 - aiogram.event - INFO - Update id=850442029 is handled. Duration 1948 ms by bot id=7510441533
+2025-03-26 09:45:35,595 - aiogram.event - INFO - Update id=850442030 is handled. Duration 1628 ms by bot id=7510441533
+2025-03-26 09:45:40,244 - aiogram.event - INFO - Update id=850442031 is handled. Duration 1032 ms by bot id=7510441533
+2025-03-26 09:45:48,186 - aiogram.event - INFO - Update id=850442032 is handled. Duration 988 ms by bot id=7510441533
+2025-03-26 09:45:50,470 - aiogram.event - INFO - Update id=850442033 is handled. Duration 1046 ms by bot id=7510441533
+2025-03-26 09:45:52,031 - aiogram.event - INFO - Update id=850442034 is handled. Duration 1000 ms by bot id=7510441533
+2025-03-26 09:45:54,776 - aiogram.event - INFO - Update id=850442035 is handled. Duration 997 ms by bot id=7510441533
+2025-03-26 09:45:57,162 - aiogram.event - INFO - Update id=850442036 is handled. Duration 1005 ms by bot id=7510441533
+2025-03-26 09:46:01,214 - aiogram.event - INFO - Update id=850442037 is handled. Duration 2087 ms by bot id=7510441533
+2025-03-26 09:46:05,975 - aiogram.event - INFO - Update id=850442038 is handled. Duration 3322 ms by bot id=7510441533
+2025-03-26 09:55:24,324 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-26 09:55:24,666 - root - INFO - Closing database connection...
+2025-03-26 09:55:24,700 - databases - INFO - Disconnected from database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:55:24,731 - aiogram.dispatcher - INFO - Polling stopped for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:55:24,765 - root - INFO - Bot stopped!
+2025-03-26 09:55:43,173 - root - INFO - Connecting to database...
+2025-03-26 09:55:46,857 - databases - INFO - Connected to database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:55:46,858 - root - INFO - Creating tables...
+2025-03-26 09:55:54,985 - root - INFO - Setting bot commands...
+2025-03-26 09:55:55,435 - root - INFO - Starting bot...
+2025-03-26 09:55:55,436 - aiogram.dispatcher - INFO - Start polling
+2025-03-26 09:55:55,602 - aiogram.dispatcher - INFO - Run polling for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:56:07,344 - aiogram.event - INFO - Update id=850442039 is handled. Duration 2731 ms by bot id=7510441533
+2025-03-26 09:56:11,854 - aiogram.event - INFO - Update id=850442040 is handled. Duration 1536 ms by bot id=7510441533
+2025-03-26 09:56:14,220 - aiogram.event - INFO - Update id=850442041 is handled. Duration 1510 ms by bot id=7510441533
+2025-03-26 09:56:16,454 - aiogram.event - INFO - Update id=850442042 is handled. Duration 1618 ms by bot id=7510441533
+2025-03-26 09:56:18,688 - aiogram.event - INFO - Update id=850442043 is handled. Duration 1431 ms by bot id=7510441533
+2025-03-26 09:56:22,340 - aiogram.event - INFO - Update id=850442044 is handled. Duration 1530 ms by bot id=7510441533
+2025-03-26 09:56:26,533 - aiogram.event - INFO - Update id=850442045 is handled. Duration 1909 ms by bot id=7510441533
+2025-03-26 09:56:31,598 - aiogram.event - INFO - Update id=850442046 is handled. Duration 2943 ms by bot id=7510441533
+2025-03-26 09:56:37,656 - aiogram.event - INFO - Update id=850442047 is handled. Duration 4619 ms by bot id=7510441533
+2025-03-26 09:56:53,316 - aiogram.event - INFO - Update id=850442048 is handled. Duration 3360 ms by bot id=7510441533
+2025-03-26 09:56:57,199 - aiogram.event - INFO - Update id=850442049 is handled. Duration 2578 ms by bot id=7510441533
+2025-03-26 09:57:03,511 - aiogram.event - INFO - Update id=850442050 is handled. Duration 3067 ms by bot id=7510441533
+2025-03-26 09:57:08,342 - aiogram.event - INFO - Update id=850442051 is handled. Duration 2035 ms by bot id=7510441533
+2025-03-26 09:57:14,287 - aiogram.event - INFO - Update id=850442052 is handled. Duration 1426 ms by bot id=7510441533
+2025-03-26 09:57:16,640 - aiogram.event - INFO - Update id=850442053 is handled. Duration 1573 ms by bot id=7510441533
+2025-03-26 09:57:19,267 - aiogram.event - INFO - Update id=850442054 is handled. Duration 1545 ms by bot id=7510441533
+2025-03-26 09:57:22,587 - aiogram.event - INFO - Update id=850442055 is handled. Duration 1495 ms by bot id=7510441533
+2025-03-26 09:57:24,810 - aiogram.event - INFO - Update id=850442056 is handled. Duration 1449 ms by bot id=7510441533
+2025-03-26 09:57:34,852 - aiogram.event - INFO - Update id=850442057 is handled. Duration 1476 ms by bot id=7510441533
+2025-03-26 09:57:38,647 - aiogram.event - INFO - Update id=850442058 is handled. Duration 2510 ms by bot id=7510441533
+2025-03-26 09:57:47,545 - aiogram.event - INFO - Update id=850442059 is handled. Duration 3798 ms by bot id=7510441533
+2025-03-26 09:58:41,298 - aiogram.event - INFO - Update id=850442060 is handled. Duration 2297 ms by bot id=7510441533
+2025-03-26 09:58:48,910 - aiogram.event - INFO - Update id=850442061 is handled. Duration 2045 ms by bot id=7510441533
+2025-03-26 09:58:56,324 - aiogram.event - INFO - Update id=850442062 is handled. Duration 1805 ms by bot id=7510441533
+2025-03-26 09:58:59,898 - aiogram.event - INFO - Update id=850442063 is handled. Duration 2056 ms by bot id=7510441533
+2025-03-26 09:59:05,413 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-26 09:59:05,561 - aiogram.dispatcher - INFO - Polling stopped for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 09:59:05,563 - root - INFO - Closing database connection...
+2025-03-26 09:59:06,065 - databases - INFO - Disconnected from database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 09:59:06,071 - root - INFO - Bot stopped!
+2025-03-26 10:21:04,055 - root - INFO - Connecting to database...
+2025-03-26 10:21:08,038 - databases - INFO - Connected to database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 10:21:08,040 - root - INFO - Creating tables...
+2025-03-26 10:21:14,909 - root - INFO - Setting bot commands...
+2025-03-26 10:21:15,314 - root - INFO - Starting bot...
+2025-03-26 10:21:15,314 - aiogram.dispatcher - INFO - Start polling
+2025-03-26 10:21:15,435 - aiogram.dispatcher - INFO - Run polling for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 10:21:15,600 - aiogram.event - INFO - Update id=850442078 is not handled. Duration 6 ms by bot id=7510441533
+2025-03-26 10:21:19,445 - aiogram.event - INFO - Update id=850442079 is not handled. Duration 16 ms by bot id=7510441533
+2025-03-26 10:21:24,156 - aiogram.event - INFO - Update id=850442080 is handled. Duration 2808 ms by bot id=7510441533
+2025-03-26 10:21:54,631 - aiogram.dispatcher - INFO - Polling stopped
+2025-03-26 10:21:54,831 - aiogram.dispatcher - INFO - Polling stopped for bot @cooplinkbot id=7510441533 - 'Cooplink'
+2025-03-26 10:21:54,833 - root - INFO - Closing database connection...
+2025-03-26 10:21:55,261 - databases - INFO - Disconnected from database postgresql://bots_714l_user:********@dpg-cvh2ks1u0jms73bh60gg-a.oregon-postgres.render.com/bots_714l
+2025-03-26 10:21:55,273 - root - INFO - Bot stopped!
