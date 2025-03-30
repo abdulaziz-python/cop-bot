@@ -107,11 +107,28 @@ async def get_total_listings():
         print(f"Error getting total listings: {e}")
         return 0
 
-async def get_all_users():
+async def get_all_users(user_id=None):
     from .models import users
-    query = users.select()
+    if user_id:
+        query = users.select().where(users.c.id == user_id)
+    else:
+        query = users.select()
     try:
         return await database.fetch_all(query)
     except Exception as e:
         print(f"Error getting all users: {e}")
+        return []
+
+async def get_all_listings_with_users():
+    from .models import listings, users
+    query = """
+    SELECT l.*, u.username, u.language 
+    FROM listings l 
+    JOIN users u ON l.user_id = u.id
+    ORDER BY l.created_at DESC
+    """
+    try:
+        return await database.fetch_all(query=query)
+    except Exception as e:
+        print(f"Error getting all listings with users: {e}")
         return []

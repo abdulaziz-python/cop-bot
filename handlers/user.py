@@ -83,6 +83,7 @@ async def change_language(message: Message, state: FSMContext):
 
 @router.message(F.text == Button.get_text(Button.PROFILE, Language.UZBEK))
 @router.message(F.text == Button.get_text(Button.PROFILE, Language.RUSSIAN))
+@router.message(Command("profile"))
 async def show_profile(message: Message):
     user = await get_user(message.from_user.id)
     language = user[2] if user else Config.DEFAULT_LANGUAGE
@@ -103,6 +104,7 @@ async def show_profile(message: Message):
 
 @router.message(F.text == Button.get_text(Button.HELP, Language.UZBEK))
 @router.message(F.text == Button.get_text(Button.HELP, Language.RUSSIAN))
+@router.message(Command("help"))
 async def show_help(message: Message):
     user = await get_user(message.from_user.id)
     language = user[2] if user else Config.DEFAULT_LANGUAGE

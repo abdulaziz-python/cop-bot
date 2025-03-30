@@ -27,7 +27,22 @@ class Button:
                 Button.YES: "✅ Ha",
                 Button.NO: "❌ Yo'q",
                 Button.CONFIRM: "✅ Tasdiqlash",
-                Button.CANCEL: "❌ Bekor qilish"
+                Button.CANCEL: "❌ Bekor qilish",
+                'admin_panel': "<b>Admin Panel</b>\n\nJami foydalanuvchilar: {total_users}\nJami e'lonlar: {total_listings}",
+                'broadcast_prompt': "<b>Barcha foydalanuvchilarga yuborish uchun xabarni kiriting:</b>",
+                'broadcast_started': "<b>Xabar yuborilmoqda...</b>",
+                'broadcast_completed': "<b>Xabar yuborish yakunlandi!</b>\n\nYuborildi: {sent} foydalanuvchilarga\nYuborilmadi: {failed} foydalanuvchilarga",
+                'listing_approved': "<b>E'lon #{listing_id} tasdiqlandi va kanalga joylashtirildi.</b>",
+                'listing_rejected': "<b>E'lon #{listing_id} rad etildi.</b>",
+                'no_users': "<b>Tizimda foydalanuvchilar topilmadi.</b>",
+                'users_list': "<b>Jami foydalanuvchilar: {total}</b>\n\n{users}",
+                'user_item': "{number}. ID: <code>{id}</code> - @{username} - Til: {language} - Qo'shilgan: {date}\n",
+          
+                'no_listings': "<b>Tizimda e'lonlar topilmadi.</b>",
+                'listings_header': "<b>Barcha e'lonlar</b> (Sahifa {page}/{total_pages})\n\n",
+                'listing_item': "ID: <code>{id}</code> - {name}\nMuallif: @{username}\nNarxi: ${price}\nHolati: {status}\nSana: {date}\n\n",
+                'prev_page': "« Oldingi",
+                'next_page': "Keyingi »",
             },
             'ru': {
                 Button.UZBEK: "🇺🇿 O'zbek tili",
@@ -40,7 +55,42 @@ class Button:
                 Button.YES: "✅ \u0414\u0430",
                 Button.NO: "❌ \u041d\u0435\u0442",
                 Button.CONFIRM: "✅ \u041f\u043e\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c",
-                Button.CANCEL: "❌ \u041e\u0442\u043c\u0435\u043d\u0438\u0442\u044c"
+                Button.CANCEL: "❌ \u041e\u0442\u043c\u0435\u043d\u0438\u0442\u044c",
+                
+                'admin_panel': "<b>Admin Panel</b>\n\nTotal Users: {total_users}\nTotal Listings: {total_listings}",
+                'broadcast_prompt': "<b>Please enter the message to broadcast to all users:</b>",
+                'broadcast_started': "<b>Broadcasting message...</b>",
+                'broadcast_completed': "<b>Broadcast completed!</b>\n\nSent to: {sent} users\nFailed: {failed} users",
+                'listing_approved': "<b>Listing #{listing_id} has been approved and posted to the channel.</b>",
+                'listing_rejected': "<b>Listing #{listing_id} has been rejected.</b>",
+                
+                'no_users': "<b>No users found in the system.</b>",
+                'users_list': "<b>Total Users: {total}</b>\n\n{users}",
+                'user_item': "{number}. ID: <code>{id}</code> - @{username} - Lang: {language} - Joined: {date}\n",
+                
+                'no_listings': "<b>No listings found in the system.</b>",
+                'listings_header': "<b>All Listings</b> (Page {page}/{total_pages})\n\n",
+                'listing_item': "ID: <code>{id}</code> - {name}\nBy: @{username}\nPrice: ${price}\nStatus: {status}\nDate: {date}\n\n",
+                'prev_page': "« Previous",
+                'next_page': "Next »",
+            },
+            'en': {
+                'admin_panel': "<b>Admin Panel</b>\n\nTotal Users: {total_users}\nTotal Listings: {total_listings}",
+                'broadcast_prompt': "<b>Please enter the message to broadcast to all users:</b>",
+                'broadcast_started': "<b>Broadcasting message...</b>",
+                'broadcast_completed': "<b>Broadcast completed!</b>\n\nSent to: {sent} users\nFailed: {failed} users",
+                'listing_approved': "<b>Listing #{listing_id} has been approved and posted to the channel.</b>",
+                'listing_rejected': "<b>Listing #{listing_id} has been rejected.</b>",
+                
+                'no_users': "<b>No users found in the system.</b>",
+                'users_list': "<b>Total Users: {total}</b>\n\n{users}",
+                'user_item': "{number}. ID: <code>{id}</code> - @{username} - Lang: {language} - Joined: {date}\n",
+                
+                'no_listings': "<b>No listings found in the system.</b>",
+                'listings_header': "<b>All Listings</b> (Page {page}/{total_pages})\n\n",
+                'listing_item': "ID: <code>{id}</code> - {name}\nBy: @{username}\nPrice: ${price}\nStatus: {status}\nDate: {date}\n\n",
+                'prev_page': "« Previous",
+                'next_page': "Next »",
             }
         }
         return texts.get(lang, texts['uz']).get(button, f"Unknown button: {button}")
